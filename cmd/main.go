@@ -7,8 +7,6 @@ import (
 	"weather-service/internal/handlers"
 	"weather-service/internal/repo"
 	"weather-service/internal/service"
-
-	"github.com/gorilla/mux"
 )
 
 func main() {
@@ -21,10 +19,6 @@ func main() {
 	s := service.New(repo, config)
 	h := handlers.New(s, config)
 
-	r := mux.NewRouter()
-	r.HandleFunc("/weather", h.GetWeather).Methods("GET")
-	r.HandleFunc("/weather", h.UpdateWeather).Methods("PUT")
-
 	log.Println("Server is running on :8080")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Fatal(http.ListenAndServe(":8080", h.Routes()))
 }

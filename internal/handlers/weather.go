@@ -19,7 +19,13 @@ func (h *handlers) GetWeather(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	json.NewEncoder(w).Encode(weather)
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(weather)
+	if err != nil {
+		http.Error(w, "Cannot encode json", http.StatusInternalServerError)
+		return
+	}
 }
 
 func (h *handlers) UpdateWeather(w http.ResponseWriter, r *http.Request) {
@@ -35,5 +41,11 @@ func (h *handlers) UpdateWeather(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	json.NewEncoder(w).Encode(weather)
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(weather)
+	if err != nil {
+		http.Error(w, "Cannot encode json", http.StatusInternalServerError)
+		return
+	}
 }
