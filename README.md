@@ -32,7 +32,7 @@ This project is a test application. The goal is to build a REST API service usin
 
 4. **Run the application:**
    ```bash
-   go run main.go
+   go run ./cmd/
    ```
 
 5. **Run tests:**
