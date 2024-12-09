@@ -22,20 +22,12 @@ This project is a test application. The goal is to build a REST API service usin
    go mod tidy
    ```
 
-3. **Set up environment variables:**
-   Create a `.env` file in the root directory with the following content:
-   ```plaintext
-    MONGO_URI=
-    DATABASE_NAME=
-    WEATHER_API_KEY=
-   ```
-
-4. **Run the application:**
+3. **Run the application:**
    ```bash
    go run ./cmd/
    ```
 
-5. **Run tests:**
+4. **Run tests:**
    ```bash
    go test ./...
    ```
