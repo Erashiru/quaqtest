@@ -5,7 +5,7 @@ import (
 )
 
 type RepoI interface {
-	mongodb.Base
+	mongodb.Weather
 }
 
 func New(uri, dbName string) (RepoI, error) {

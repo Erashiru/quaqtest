@@ -18,7 +18,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error with database connection: %v", err)
 	}
-
 	s := service.New(repo, config)
 	h := handlers.New(s, config)
 
