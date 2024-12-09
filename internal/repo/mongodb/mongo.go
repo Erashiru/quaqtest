@@ -25,6 +25,7 @@ func ConnectMongoDB(uri, dbName string) (*MongoDB, error) {
 
 	if err := client.Connect(ctx); err != nil {
 		log.Fatalf("Failed to connect to MongoDB: %v", err)
+		return nil, err
 	}
 
 	DB := client.Database(dbName)
