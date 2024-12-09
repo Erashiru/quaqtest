@@ -5,7 +5,6 @@ import (
 	"weather-service/models"
 )
 
-// MockRepo — мок для репозитория
 type MockRepo struct {
 	Data map[string]*models.Weather
 }
@@ -27,7 +26,6 @@ func (m *MockRepo) Add(city string, weather *models.Weather) error {
 	return nil
 }
 
-// MockService — мок для сервиса
 type MockService struct {
 	Repo *MockRepo
 }
@@ -41,7 +39,6 @@ func (m *MockService) GetWeather(city string) (*models.Weather, error) {
 }
 
 func (m *MockService) FetchWeather(city string) (*models.Weather, error) {
-	// Возвращаем фиктивные данные для тестов
 	weather := &models.Weather{
 		City:        city,
 		Temperature: 25.0,

@@ -11,12 +11,10 @@ import (
 )
 
 func TestGetWeather(t *testing.T) {
-	// Инициализация моков
 	mockRepo := mocks.NewMockRepo()
 	mockService := mocks.NewMockService(mockRepo)
 	h := New(mockService, nil)
 
-	// Добавляем тестовые данные
 	mockRepo.Add("Almaty", &models.Weather{
 		City:        "Almaty",
 		Temperature: 24.8,
@@ -24,7 +22,6 @@ func TestGetWeather(t *testing.T) {
 		Description: "clear sky",
 	})
 
-	// Создаем запрос
 	req, err := http.NewRequest("GET", "/weather?city=Almaty", nil)
 	if err != nil {
 		t.Fatalf("Failed to create request: %v", err)
@@ -35,19 +32,16 @@ func TestGetWeather(t *testing.T) {
 	router.HandleFunc("/weather", h.GetWeather).Methods("GET")
 	router.ServeHTTP(rr, req)
 
-	// Проверяем ответ
 	if rr.Code != http.StatusOK {
 		t.Errorf("Expected status code %d, got %d", http.StatusOK, rr.Code)
 	}
 }
 
 func TestUpdateWeather(t *testing.T) {
-	// Инициализация моков
 	mockRepo := mocks.NewMockRepo()
 	mockService := mocks.NewMockService(mockRepo)
 	h := New(mockService, nil)
 
-	// Создаем запрос
 	req, err := http.NewRequest("PUT", "/weather?city=Astana", nil)
 	if err != nil {
 		t.Fatalf("Failed to create request: %v", err)
@@ -58,7 +52,6 @@ func TestUpdateWeather(t *testing.T) {
 	router.HandleFunc("/weather", h.UpdateWeather).Methods("PUT")
 	router.ServeHTTP(rr, req)
 
-	// Проверяем ответ
 	if rr.Code != http.StatusOK {
 		t.Errorf("Expected status code %d, got %d", http.StatusOK, rr.Code)
 	}
