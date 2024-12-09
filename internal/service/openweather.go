@@ -3,21 +3,33 @@ package service
 import (
 	"encoding/json"
 	"fmt"
-	"weather-service/internal/config"
 	"weather-service/models"
 
 	"github.com/go-resty/resty/v2"
 )
 
-func FetchWeather(city string) (*models.Weather, error) {
+type Weather interface {
+	FetchWeather(city string) (*models.Weather, error)
+	GetWeather(city string) (*models.Weather, error)
+}
+
+func (s *service) GetWeather(city string) (*models.Weather, error) {
+	weather, err := s.repo.Get(city)
+	if err != nil {
+		return nil, err
+	}
+	return weather, nil
+}
+
+func (s *service) FetchWeather(city string) (*models.Weather, error) {
 	client := resty.New()
 
 	response, err := client.R().
 		SetQueryParams(map[string]string{
 			"q":     city,
-			"appid": config.WeatherAPI,
+			"appid": s.conf.WeatherAPI,
 			"units": "metric",
-		}).Get(config.WeatherBase)
+		}).Get(s.conf.WeatherBase)
 
 	if err != nil {
 		return nil, err
@@ -40,10 +52,17 @@ func FetchWeather(city string) (*models.Weather, error) {
 		return nil, err
 	}
 
-	return &models.Weather{
+	weatherReport := &models.Weather{
 		Temperature: data.Main.Temp,
 		Humidity:    data.Main.Humidity,
 		Description: data.Weather[0].Description,
 		City:        city,
-	}, nil
+	}
+
+	err = s.repo.Add(city, weatherReport)
+	if err != nil {
+		return nil, err
+	}
+
+	return weatherReport, nil
 }

@@ -1,4 +1,4 @@
-package repo
+package mongodb
 
 import (
 	"context"
@@ -9,12 +9,15 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var DB *mongo.Database
+type MongoDB struct {
+	DB *mongo.Database
+}
 
-func ConnectMongoDB(uri, dbName string) {
+func ConnectMongoDB(uri, dbName string) (*MongoDB, error) {
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
 		log.Fatalf("Failed to create MongoDB client: %v", err)
+		return nil, err
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -24,5 +27,6 @@ func ConnectMongoDB(uri, dbName string) {
 		log.Fatalf("Failed to connect to MongoDB: %v", err)
 	}
 
-	DB = client.Database(dbName)
+	DB := client.Database(dbName)
+	return &MongoDB{DB: DB}, nil
 }
